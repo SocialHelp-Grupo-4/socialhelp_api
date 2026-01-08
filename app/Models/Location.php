@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Location extends Model
+{
+     /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'name',
+        'province',
+        'municipality',
+        'geolocation',
+    ];
+
+    public function problemAreas()
+    {
+        return $this->belongsToMany(ProblemArea::class, 'location_problem_areas');
+    }
+}

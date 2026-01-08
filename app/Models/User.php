@@ -24,6 +24,8 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'google_id',
+        'profile_photo_path',
     ];
 
     /**
@@ -36,6 +38,7 @@ class User extends Authenticatable implements JWTSubject
         'two_factor_secret',
         'two_factor_recovery_codes',
         'remember_token',
+        'google_id',
     ];
 
     /**
@@ -60,5 +63,25 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+    public function addresses()
+    {
+        return $this->belongsToMany(Address::class, 'user_addresses');
+    }
+
+    public function phoneNumbers()
+    {
+        return $this->hasMany(UserPhoneNumber::class);
+    }
+
+    public function family()
+    {
+        return $this->hasOne(Family::class);
     }
 }
