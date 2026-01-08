@@ -19,7 +19,7 @@ class Institution extends Model
         'state',
         'logo',
         'user_id',
-        'category_institution_id',
+        'institution_category_id',
     ];
 
     protected function casts(): array
@@ -37,5 +37,10 @@ class Institution extends Model
     public function phoneNumbers()
     {
         return $this->hasMany(UserPhoneNumber::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(InstitutionCategory::class, 'institution_category_id');
     }
 }

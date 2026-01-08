@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->enum('status', InstitutionStatus::cases())->default(InstitutionStatus::PENDING->value);
             $table->string('logo')->nullable();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('category_institution_id')->constrained();
+            $table->foreignId('institution_category_id')->constrained();
             $table->timestamps();
         });
     }
