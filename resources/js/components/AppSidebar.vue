@@ -25,7 +25,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Categorias de Instituição',
-        href: '/categorias-instituicao',
+        href: '/institution/category',
         icon: Folder,
     },
 ];

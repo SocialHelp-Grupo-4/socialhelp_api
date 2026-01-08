@@ -1,16 +1,7 @@
 <script setup lang="ts">
-import InputError from '@/components/InputError.vue';
-import TextLink from '@/components/TextLink.vue';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Spinner } from '@/components/ui/spinner';
-import AuthBase from '@/layouts/AuthLayout.vue';
-import { register } from '@/routes';
-import { store } from '@/routes/login';
-import { request } from '@/routes/password';
-import { Form, Head } from '@inertiajs/vue3';
+import LoginForm from '@/components/login-02/components/LoginForm.vue';
+
+
 
 defineProps<{
     status?: string;
@@ -20,91 +11,27 @@ defineProps<{
 </script>
 
 <template>
-    <AuthBase
-        title="Inicie sessão na sua conta"
-        description="Digite seu email e senha abaixo para entrar"
-    >
-        <Head title="Iniciar sessão" />
 
-        <div
-            v-if="status"
-            class="mb-4 text-center text-sm font-medium text-green-600"
-        >
-            {{ status }}
-        </div>
-
-        <Form
-            v-bind="store.form()"
-            :reset-on-success="['password']"
-            v-slot="{ errors, processing }"
-            class="flex flex-col gap-6"
-        >
-            <div class="grid gap-6">
-                <div class="grid gap-2">
-                    <Label for="email">Email</Label>
-                    <Input
-                        id="email"
-                        type="email"
-                        name="email"
-                        required
-                        autofocus
-                        :tabindex="1"
-                        autocomplete="email"
-                        placeholder="email@exemplo.com"
-                    />
-                    <InputError :message="errors.email" />
-                </div>
-
-                <div class="grid gap-2">
-                    <div class="flex items-center justify-between">
-                        <Label for="password">Senha</Label>
-                        <TextLink
-                            v-if="canResetPassword"
-                            :href="request()"
-                            class="text-sm"
-                            :tabindex="5"
-                        >
-                            Esqueceu a senha?
-                        </TextLink>
+    <div class="grid min-h-svh lg:grid-cols-2">
+        <div class="flex flex-col gap-4 p-6 md:p-10">
+            <div class="flex justify-center gap-2 md:justify-start">
+                <a href="#" class="flex items-center gap-2 font-medium">
+                    <div class="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
+                        <GalleryVerticalEnd class="size-4" />
                     </div>
-                    <Input
-                        id="password"
-                        type="password"
-                        name="password"
-                        required
-                        :tabindex="2"
-                        autocomplete="current-password"
-                        placeholder="Sua senha"
-                    />
-                    <InputError :message="errors.password" />
-                </div>
-
-                <div class="flex items-center justify-between">
-                    <Label for="remember" class="flex items-center space-x-3">
-                        <Checkbox id="remember" name="remember" :tabindex="3" />
-                        <span>Lembrar-me</span>
-                    </Label>
-                </div>
-
-                <Button
-                    type="submit"
-                    class="mt-4 w-full"
-                    :tabindex="4"
-                    :disabled="processing"
-                    data-test="login-button"
-                >
-                    <Spinner v-if="processing" />
-                    Entrar
-                </Button>
+                    SocialHelp.org
+                </a>
             </div>
-
-            <div
-                class="text-center text-sm text-muted-foreground"
-                v-if="canRegister"
-            >
-                Não tem uma conta?
-                <TextLink :href="register()" :tabindex="5">Registre-se</TextLink>
+            <div class="flex flex-1 items-center justify-center">
+                <div class="w-full max-w-xs">
+                   <LoginForm :status="status" :can-reset-password="canResetPassword" :can-register="canRegister" />
+                </div>
             </div>
-        </Form>
-    </AuthBase>
+        </div>
+        <div class="bg-muted relative hidden lg:block">
+            <img src="/placeholder.svg" alt="Image"
+                class="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale">
+        </div>
+    </div>
+
 </template>

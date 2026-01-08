@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\CategoriaInstituicaoController;
+use App\Http\Controllers\Dashboard\InstitutionCategoryController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -15,11 +15,15 @@ Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource(
-        'categorias-instituicao',
-        CategoriaInstituicaoController::class
-    )->names('categorias-instituicao');
-});
 
-require __DIR__.'/settings.php';
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('institution')->group(function () {
+        Route::resource(
+            'category',
+            InstitutionCategoryController::class
+        )->names('category');
+    });
+})->name('institution.');
+
+require __DIR__ . '/settings.php';
