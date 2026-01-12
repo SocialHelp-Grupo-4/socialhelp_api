@@ -13,7 +13,8 @@ class Family extends Model
      */
     protected $fillable = [
         'status',
-        'profile_id',
+        'user_id',
+        'location_id',
     ];
 
     protected function casts(): array

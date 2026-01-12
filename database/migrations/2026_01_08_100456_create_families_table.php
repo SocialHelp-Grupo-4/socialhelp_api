@@ -13,7 +13,7 @@ return new class extends Migration {
     {
         Schema::create('families', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('localidade_id')->constrained('locations');
+            $table->foreignId('location_id')->constrained('locations');
             $table->enum('status', FamilyStatus::cases())->default(FamilyStatus::PENDING->value);
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
