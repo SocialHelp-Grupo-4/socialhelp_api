@@ -8,53 +8,60 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { dashboard } from '@/routes'
 import { type BreadcrumbItem } from '@/types'
 
+const props = defineProps<{
+  problemArea: {
+    id: number
+    name: string
+  }
+}>()
+
 const breadcrumbs: BreadcrumbItem[] = [
   {
     title: 'Dashboard',
     href: dashboard().url,
   },
   {
-    title: 'Categorias de Instituição',
-    href: '/institution/category',
+    title: 'Áreas de Problema',
+    href: '/problem_area',
   },
   {
-    title: 'Criar',
-    href: '/institution/category/create',
+    title: 'Editar',
+    href: `/problem_area/${props.problemArea.id}/edit`,
   },
 ]
 
 const form = useForm({
-  name: '',
+  name: props.problemArea.name,
 })
 
 function submit() {
-  form.post('/institution/category')
+  form.put(`/problem_area/${props.problemArea.id}`)
 }
 </script>
 
 <template>
 
-  <Head title="Nova Categoria" />
+  <Head title="Editar Área de Problema" />
 
   <AppLayout :breadcrumbs="breadcrumbs">
     <div class="flex h-full flex-1 flex-col gap-4 p-4 md:p-6 max-w-2xl mx-auto w-full">
       <form @submit.prevent="submit">
         <Card>
           <CardHeader>
-            <CardTitle>Criar Nova Categoria</CardTitle>
-            <CardDescription>Defina o nome da nova categoria de instituição.</CardDescription>
+            <CardTitle>Editar Área de Problema</CardTitle>
+            <CardDescription>Atualize o nome da área de problema.</CardDescription>
           </CardHeader>
           <CardContent class="space-y-4">
             <div class="space-y-2">
               <Label for="name">Nome</Label>
-              <Input id="name" v-model="form.name" placeholder="Ex: Hospital, Escola, etc."
+              <Input id="name" v-model="form.name" placeholder="Ex: Saúde, Educação, Nutrição"
                 :class="{ 'border-red-500': form.errors.name }" />
               <p v-if="form.errors.name" class="text-sm text-red-500">{{ form.errors.name }}</p>
             </div>
           </CardContent>
           <CardFooter class="flex justify-end gap-2">
-            <Button variant="outline" type="button" @click="$inertia.visit('/institution/category')">Cancelar</Button>
-            <Button type="submit" :disabled="form.processing">Criar Categoria</Button>
+            <Button variant="outline" type="button" @click="$inertia.visit('/problem_area')">Cancelar</Button>
+            <Button type="submit" :disabled="form.processing">Gravar Alterações</Button>
           </CardFooter>
         </Card>
       </form>

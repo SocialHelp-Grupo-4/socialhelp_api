@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('socioeconomic_data', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('data_type_id')->constrained('socioeconomic_data_types');
+            $table->foreignId('socioeconomic_data_type_id')->constrained('socioeconomic_data_types');
             $table->string('value');
             $table->text('observation')->nullable();
             $table->timestamps();

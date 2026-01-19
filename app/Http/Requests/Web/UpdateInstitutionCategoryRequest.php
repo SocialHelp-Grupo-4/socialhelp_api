@@ -22,7 +22,7 @@ class UpdateInstitutionCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:100|unique:institution_categories,name,' . $this->institutionCategory->id,
+            'name' => 'required|string|max:100|unique:institution_categories,name,' . $this->route('category')->id,
 
         ];
     }

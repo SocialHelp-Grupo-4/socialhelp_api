@@ -13,12 +13,12 @@ class SocioeconomicFamilyData extends Model
      */
     protected $fillable = [
         'family_id',
-        'data_id',
+        'socioeconomic_data_id',
         'description',
     ];
 
     public function socioeconomicData()
     {
-        return $this->belongsTo(SocioeconomicData::class, 'data_id');
+        return $this->belongsTo(SocioeconomicData::class, 'socioeconomic_data_id');
     }
 }

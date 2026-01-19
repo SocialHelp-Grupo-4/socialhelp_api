@@ -14,7 +14,18 @@ import {
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
+import {
+    BookOpen,
+    Folder,
+    LayoutGrid,
+    Users,
+    Building2,
+    MapPin,
+    Heart,
+    Briefcase,
+    AlertCircle,
+    Database
+} from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
@@ -24,9 +35,44 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
+        title: 'Utilizadores',
+        href: '/users',
+        icon: Users,
+    },
+    {
         title: 'Categorias de Instituição',
         href: '/institution/category',
         icon: Folder,
+    },
+      {
+        title: 'Instituições',
+        href: '/institution',
+        icon: Building2,
+    },
+    {
+        title: 'Localizações',
+        href: '/location',
+        icon: MapPin,
+    },
+    {
+        title: 'Familias',
+        href: '/family',
+        icon: Heart,
+    },
+    {
+        title: 'Projectos',
+        href: '/project',
+        icon: Briefcase,
+    },
+    {
+        title: 'Areas de Problema',
+        href: '/problem_area',
+        icon: AlertCircle,
+    },
+    {
+        title: 'Tipos de Dados Socioeconomicos',
+        href: '/socioeconomic_data_type',
+        icon: Database,
     },
 ];
 

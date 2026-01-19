@@ -39,7 +39,7 @@ class InstitutionCategoryController extends Controller
         $this->service->create($request->validated());
 
         return redirect()
-            ->route('institution.category.index')
+            ->route('category.index')
             ->with('success', 'Categoria criada com sucesso');
     }
 

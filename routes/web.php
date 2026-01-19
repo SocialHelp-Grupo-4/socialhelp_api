@@ -21,10 +21,10 @@ Route::get('dashboard', function () {
 
 
 
-Route::resource('users', UserController::class)->names('users');
 
-    Route::middleware(['auth', 'verified'])->group(function () {
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('users', UserController::class)->names('users');
     Route::prefix('institution')->group(function () {
         Route::resource(
             'category',
@@ -36,9 +36,13 @@ Route::resource('users', UserController::class)->names('users');
             InstitutionController::class
         )->names('institution');
     });
-    
+
     Route::resource('location', LocationController::class)->names('location');
     Route::resource('family', FamilyController::class)->names('family');
+
+    Route::resource('project', \App\Http\Controllers\Dashboard\ProjectController::class)->names('project');
+    Route::resource('problem_area', \App\Http\Controllers\Dashboard\ProblemAreaController::class)->names('problem_area');
+    Route::resource('socioeconomic_data_type', \App\Http\Controllers\Dashboard\SocioeconomicDataTypeController::class)->names('socioeconomic_data_type');
 });
 
 require __DIR__ . '/settings.php';

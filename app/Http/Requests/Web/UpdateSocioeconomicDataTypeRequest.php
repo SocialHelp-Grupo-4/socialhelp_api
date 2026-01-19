@@ -4,7 +4,7 @@ namespace App\Http\Requests\Web;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserRequest extends FormRequest
+class UpdateSocioeconomicDataTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,8 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:100|unique:users,name,' . $this->route('user')->id,
-            'email' => 'required|email|max:100|unique:users,email,' . $this->route('user')->id,
-
+            'name' => ['required', 'string', 'max:255', 'unique:socioeconomic_data_types,name,' . $this->route('socioeconomic_data_type')->id],
+            'description' => ['nullable', 'string'],
         ];
     }
 }

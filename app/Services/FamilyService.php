@@ -16,7 +16,7 @@ class FamilyService
 
     public function index()
     {
-        return Family::orderBy('id')->get();
+        return Family::with(['location', 'user'])->orderBy('id')->get();
     }
 
     public function paginate(int $perPage = 15)

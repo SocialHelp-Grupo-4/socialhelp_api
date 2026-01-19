@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('socioeconomic_family_data', function (Blueprint $table) {
             $table->id();
             $table->foreignId('family_id')->constrained();
-            $table->foreignId('data_id')->constrained('socioeconomic_data');
+            $table->foreignId('socioeconomic_data_id')->constrained('socioeconomic_data');
             $table->string('description')->nullable();
             $table->timestamps();
         });

@@ -22,8 +22,8 @@ class UpdateLocationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:100|unique:locations,name,' . $this->location->id,
-            'geolocation' => 'required|string|max:255|unique:locations,geolocation,' . $this->location->id,
+            'name' => 'required|string|max:100|unique:locations,name,' . $this->route('location')->id,
+            'geolocation' => 'required|string|max:255|unique:locations,geolocation,' . $this->route('location')->id,
 
         ];
     }

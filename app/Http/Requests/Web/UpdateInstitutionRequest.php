@@ -22,9 +22,9 @@ class UpdateInstitutionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:100|unique:institutions,name,' . $this->institution->id,
-            'nif' => 'required|string|max:14|unique:institutions,nif,' . $this->institution->id,
-            'email' => 'required|email|max:100|unique:institutions,email,' . $this->institution->id,
+            'name' => 'required|string|max:100|unique:institutions,name,' . $this->route('institution')->id,
+            'nif' => 'required|string|max:14|unique:institutions,nif,' . $this->route('institution')->id,
+            'email' => 'required|email|max:100|unique:institutions,email,' . $this->route('institution')->id,
 
         ];
     }

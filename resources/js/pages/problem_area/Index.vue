@@ -14,21 +14,21 @@ const breadcrumbs: BreadcrumbItem[] = [
     href: dashboard().url,
   },
   {
-    title: 'Categorias de Instituição',
-    href: '/institution/category',
+    title: 'Áreas de Problema',
+    href: '/problem_area',
   },
 ];
 
-interface Category {
-  id: number
-  name: string
+interface ProblemArea {
+  id: number;
+  name: string;
 }
 
-const props = defineProps<{
-  categories: Category[]
+defineProps<{
+  problemAreas: ProblemArea[]
 }>()
 
-const columns: ColumnDef<Category>[] = [
+const columns: ColumnDef<ProblemArea>[] = [
   {
     accessorKey: 'name',
     header: 'Nome',
@@ -39,16 +39,16 @@ const columns: ColumnDef<Category>[] = [
 const actions = [
   {
     label: 'Editar',
-    onClick: (row: Category) => {
-      router.visit(`/institution/category/${row.id}/edit`)
+    onClick: (row: ProblemArea) => {
+      router.visit(`/problem_area/${row.id}/edit`)
     },
   },
   {
     label: 'Eliminar',
     danger: true,
-    onClick: (row: Category) => {
-      if (confirm('Tem certeza que deseja eliminar esta categoria?')) {
-        router.delete(`/institution/category/${row.id}`)
+    onClick: (row: ProblemArea) => {
+      if (confirm('Tem certeza que deseja eliminar esta área de problema?')) {
+        router.delete(`/problem_area/${row.id}`)
       }
     },
   },
@@ -57,15 +57,15 @@ const actions = [
 
 <template>
 
-  <Head title="Categorias de Instituição" />
+  <Head title="Áreas de Problema" />
 
   <AppLayout :breadcrumbs="breadcrumbs">
     <div class="flex h-full flex-1 flex-col gap-4 p-4 md:p-6">
-      <GenericDataTable :data="categories" :columns="columns" :actions="actions" title="Categorias de Instituição"
-        description="Gerencie as categorias de instituição do sistema.">
+      <GenericDataTable :data="problemAreas" :columns="columns" :actions="actions" title="Áreas de Problema"
+        description="Gerencie as áreas de problema e intervenção.">
         <template #actions>
-          <Button @click="router.visit('/institution/category/create')">
-            <Plus class="mr-2 h-4 w-4" /> Nova Categoria
+          <Button @click="router.visit('/problem_area/create')">
+            <Plus class="mr-2 h-4 w-4" /> Nova Área
           </Button>
         </template>
       </GenericDataTable>

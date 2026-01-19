@@ -31,7 +31,10 @@ class FamilyController extends Controller
 
     public function create()
     {
-        return Inertia::render('family/Create');
+        return Inertia::render('family/Create', [
+            'locations' => \App\Models\Location::all(),
+            'users' => \App\Models\User::all(),
+        ]);
     }
 
     public function store(CreateFamilyRequest $request)
@@ -49,11 +52,13 @@ class FamilyController extends Controller
             'family/Edit',
             [
                 'family' => $family,
+                'locations' => \App\Models\Location::all(),
+                'users' => \App\Models\User::all(),
             ]
         );
     }
 
-     public function update(UpdateFamilyRequest $request, Family $family)
+    public function update(UpdateFamilyRequest $request, Family $family)
     {
         $family->update($request->validated());
 

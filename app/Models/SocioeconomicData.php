@@ -14,7 +14,6 @@ class SocioeconomicData extends Model
     protected $fillable = [
         'value',
         'socioeconomic_data_type_id',
-        'user_id',
     ];
 
     public function socioeconomicDataType()

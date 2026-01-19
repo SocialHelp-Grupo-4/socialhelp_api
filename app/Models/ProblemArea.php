@@ -14,4 +14,9 @@ class ProblemArea extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function locations()
+    {
+        return $this->belongsToMany(Location::class,'location_problem_areas');
+    }
 }
