@@ -3,6 +3,8 @@ import type { LucideIcon } from 'lucide-vue-next';
 
 export interface Auth {
     user: User;
+    institutions: any[]; // Or define Institution type
+    current_institution: any;
 }
 
 export interface BreadcrumbItem {

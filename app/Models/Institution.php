@@ -16,7 +16,7 @@ class Institution extends Model
         'name',
         'email',
         'description',
-        'state',
+        'status',
         'logo',
         'user_id',
         'institution_category_id',
@@ -25,7 +25,7 @@ class Institution extends Model
     protected function casts(): array
     {
         return [
-            'state' => \App\Enums\Enums\InstitutionStatus::class,
+            'status' => \App\Enums\Enums\InstitutionStatus::class,
         ];
     }
 
@@ -42,5 +42,17 @@ class Institution extends Model
     public function category()
     {
         return $this->belongsTo(InstitutionCategory::class, 'institution_category_id');
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'institution_user')
+            ->withPivot(['role', 'is_active'])
+            ->withTimestamps();
+    }
+
+    public function invitations()
+    {
+        return $this->hasMany(InstitutionInvitation::class);
     }
 }

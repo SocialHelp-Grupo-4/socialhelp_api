@@ -3,6 +3,8 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use App\Services\InvitationService;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -10,6 +12,10 @@ use Laravel\Fortify\Contracts\CreatesNewUsers;
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
+
+    public function __construct(protected InvitationService $invitationService)
+    {
+    }
 
     /**
      * Validate and create a newly registered user.
@@ -30,10 +36,14 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
         ])->validate();
 
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
-            'password' => $input['password'],
+            'password' => Hash::make($input['password']),
         ]);
+
+        $this->invitationService->processPendingFor($user);
+
+        return $user;
     }
 }

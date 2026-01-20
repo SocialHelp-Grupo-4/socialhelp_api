@@ -84,4 +84,11 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(Family::class);
     }
+
+    public function institutions()
+    {
+        return $this->belongsToMany(Institution::class, 'institution_user')
+            ->withPivot(['role', 'is_active'])
+            ->withTimestamps();
+    }
 }

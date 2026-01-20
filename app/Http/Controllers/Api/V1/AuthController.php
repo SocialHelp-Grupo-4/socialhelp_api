@@ -13,12 +13,14 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-    public function register(CreateUserRequest $request)
+    public function register(CreateUserRequest $request, \App\Services\InvitationService $invitationService)
     {
         $data = $request->validated();
         $data['password'] = Hash::make($data['password']);
 
-        User::query()->create($data);
+        $user = User::query()->create($data);
+
+        $invitationService->processPendingFor($user);
 
         return response()->json(['message' => 'User register successfully'], 201);
     }

@@ -27,6 +27,10 @@ class HandleInertiaRequests extends Middleware
         return parent::version($request);
     }
 
+    public function __construct(protected \App\Services\InstitutionContext $context)
+    {
+    }
+
     /**
      * Define the props that are shared by default.
      *
@@ -38,12 +42,16 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
+        $user = $request->user();
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user,
+                'institutions' => $user ? $user->institutions : [],
+                'current_institution' => $this->context->get(),
             ],
             'sidebarOpen' => !$request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'flash' => [

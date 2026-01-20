@@ -2,6 +2,7 @@
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
+import InstitutionSwitcher from '@/components/InstitutionSwitcher.vue';
 import {
     Sidebar,
     SidebarContent,
@@ -44,7 +45,7 @@ const mainNavItems: NavItem[] = [
         href: '/institution/category',
         icon: Folder,
     },
-      {
+    {
         title: 'Instituições',
         href: '/institution',
         icon: Building2,
@@ -77,31 +78,13 @@ const mainNavItems: NavItem[] = [
 ];
 
 const footerNavItems: NavItem[] = [
-    {
-        title: 'Github Repo',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
-    },
 ];
 </script>
 
 <template>
     <Sidebar collapsible="icon" variant="inset">
         <SidebarHeader>
-            <SidebarMenu>
-                <SidebarMenuItem>
-                    <SidebarMenuButton size="lg" as-child>
-                        <Link :href="dashboard()">
-                            <AppLogo />
-                        </Link>
-                    </SidebarMenuButton>
-                </SidebarMenuItem>
-            </SidebarMenu>
+            <InstitutionSwitcher />
         </SidebarHeader>
 
         <SidebarContent>
