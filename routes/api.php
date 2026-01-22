@@ -36,13 +36,6 @@ Route::prefix('v1')->group(function () {
         Route::post('/institutions/switch', [\App\Http\Controllers\Api\V1\InstitutionContextController::class, 'store']);
         Route::get('/institutions/current', [\App\Http\Controllers\Api\V1\InstitutionContextController::class, 'current']);
 
-        Route::apiResource('areas', App\Http\Controllers\Api\V1\AreaProblemaController::class);
-        Route::apiResource('localidades', App\Http\Controllers\Api\V1\LocalidadeController::class);
-        Route::apiResource('categorias-instituicao', App\Http\Controllers\Api\V1\CategoriaInstituicaoController::class);
-        Route::apiResource('instituicao', App\Http\Controllers\Api\V1\InstituicaoController::class);
-        Route::apiResource('familia', App\Http\Controllers\Api\V1\FamiliaController::class);
-
-
         Route::prefix('projeto-social')->group(function () {
 
         });

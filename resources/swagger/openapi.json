@@ -3,7 +3,7 @@
     "info": {
         "title": "SocialHelp API",
         "version": "1.0.0",
-        "description": ""
+        "description": "API documentation for SocialHelp application."
     },
     "servers": [
         {
@@ -11,10 +11,14 @@
         }
     ],
     "paths": {
-        "/register": {
+        "/api/v1/register": {
             "post": {
-                "summary": "register",
-                "responses": {},
+                "summary": "Register a new user",
+                "responses": {
+                    "201": {
+                        "description": "User created successfully"
+                    }
+                },
                 "tags": ["Auth"],
                 "requestBody": {
                     "content": {
@@ -44,10 +48,14 @@
                 }
             }
         },
-        "/login": {
+        "/api/v1/login": {
             "post": {
-                "summary": "login",
-                "responses": {},
+                "summary": "Login user",
+                "responses": {
+                    "200": {
+                        "description": "Login successful"
+                    }
+                },
                 "tags": ["Auth"],
                 "requestBody": {
                     "content": {
@@ -73,10 +81,14 @@
                 }
             }
         },
-        "/refresh": {
+        "/api/v1/refresh": {
             "post": {
-                "summary": "refresh",
-                "responses": {},
+                "summary": "Refresh authentication token",
+                "responses": {
+                    "200": {
+                        "description": "Token refreshed"
+                    }
+                },
                 "tags": ["Auth"],
                 "security": [
                     {
@@ -84,20 +96,18 @@
                     }
                 ],
                 "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object"
-                            }
-                        }
-                    }
+                    "content": {}
                 }
             }
         },
-        "/logout": {
+        "/api/v1/logout": {
             "post": {
-                "summary": "logout",
-                "responses": {},
+                "summary": "Logout user",
+                "responses": {
+                    "200": {
+                        "description": "Logged out successfully"
+                    }
+                },
                 "tags": ["Auth"],
                 "security": [
                     {
@@ -105,21 +115,128 @@
                     }
                 ],
                 "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object"
-                            }
-                        }
-                    }
+                    "content": {}
                 }
             }
         },
-        "/user": {
+        "/api/v1/user": {
             "get": {
-                "summary": "user",
-                "responses": {},
+                "summary": "Get authenticated user details",
+                "responses": {
+                    "200": {
+                        "description": "User details retrieved"
+                    }
+                },
                 "tags": ["Auth"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/public/projects": {
+            "get": {
+                "summary": "List public projects",
+                "tags": ["Public Projects"],
+                "parameters": [
+                    {
+                        "name": "institution_id",
+                        "in": "query",
+                        "description": "Filter by institution ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of projects"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/projects/{id}": {
+            "get": {
+                "summary": "Get project details",
+                "tags": ["Public Projects"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Project ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Project details"
+                    },
+                    "404": {
+                        "description": "Project not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/projects/{id}/register": {
+            "post": {
+                "summary": "Register available project",
+                "tags": ["Public Projects"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Project ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Registration successful"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/my-family": {
+            "get": {
+                "summary": "Get authenticated user's family",
+                "tags": ["Family"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Family details"
+                    },
+                    "404": {
+                        "description": "Family not found"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create family record",
+                "tags": ["Family"],
                 "security": [
                     {
                         "BearerAuth": []
@@ -129,9 +246,111 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "type": "object"
+                                "type": "object",
+                                "required": ["address"],
+                                "properties": {
+                                    "address": {
+                                        "type": "string"
+                                    }
+                                }
                             }
                         }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Family created"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update family record",
+                "tags": ["Family"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "address": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Family updated"
+                    },
+                    "404": {
+                        "description": "Family not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/institutions/register": {
+            "post": {
+                "summary": "Register a new institution",
+                "tags": ["Institution Registration"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "nif", "email", "institution_category_id"],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "nif": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "institution_category_id": {
+                                        "type": "integer"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Institution registered successfully"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/my-institutions-status": {
+            "get": {
+                "summary": "Check status of registered institutions",
+                "tags": ["Institution Registration"],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of institutions and statuses"
                     }
                 }
             }

@@ -20,10 +20,14 @@ class CheckInstitution
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $user = $request->user();
+
+        if ($user && $user->hasRole('Administrador')) {
+            return $next($request);
+        }
+
         if (!$this->context->check()) {
             // If user has no institution selected, check if they have any institutions
-            $user = $request->user();
-
             if ($user && $user->institutions()->exists()) {
                 // Redirect to selection page (Inertia/Web) or Error (API)
                 if ($request->expectsJson()) {
