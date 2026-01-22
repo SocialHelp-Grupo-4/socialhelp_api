@@ -36,27 +36,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Route::middleware(['institution.check'])->group(function () {
-        Route::resource('users', UserController::class)->names('users');
-        Route::prefix('institution')->group(function () {
-            Route::resource('category', InstitutionCategoryController::class)->names('category');
-            Route::resource('', InstitutionController::class)->names('institution');
+    Route::resource('users', UserController::class)->names('users');
+    Route::prefix('institution')->group(function () {
+        Route::resource('', InstitutionController::class)->names('institution');
 
-            // Members & Invitations
-            Route::get('members', [\App\Http\Controllers\Dashboard\InstitutionMembersController::class, 'index'])->name('institution.members.index');
-            Route::put('members/{user}', [\App\Http\Controllers\Dashboard\InstitutionMembersController::class, 'update'])->name('institution.members.update');
-            Route::delete('members/{user}', [\App\Http\Controllers\Dashboard\InstitutionMembersController::class, 'destroy'])->name('institution.members.destroy');
+        Route::resource('category', InstitutionCategoryController::class)->names('category');
 
-            Route::get('invitations', [\App\Http\Controllers\Dashboard\InstitutionInvitationController::class, 'index'])->name('institution.invitations.index');
-            Route::post('invitations', [\App\Http\Controllers\Dashboard\InstitutionInvitationController::class, 'store'])->name('institution.invitations.store');
-            Route::delete('invitations/{id}', [\App\Http\Controllers\Dashboard\InstitutionInvitationController::class, 'destroy'])->name('institution.invitations.destroy');
-        });
+        // Members & Invitations
+        Route::get('members', [\App\Http\Controllers\Dashboard\InstitutionMembersController::class, 'index'])->name('institution.members.index');
+        Route::put('members/{user}', [\App\Http\Controllers\Dashboard\InstitutionMembersController::class, 'update'])->name('institution.members.update');
+        Route::delete('members/{user}', [\App\Http\Controllers\Dashboard\InstitutionMembersController::class, 'destroy'])->name('institution.members.destroy');
 
-        Route::resource('location', LocationController::class)->names('location');
-        Route::resource('family', FamilyController::class)->names('family');
+        Route::get('invitations', [\App\Http\Controllers\Dashboard\InstitutionInvitationController::class, 'index'])->name('institution.invitations.index');
+        Route::post('invitations', [\App\Http\Controllers\Dashboard\InstitutionInvitationController::class, 'store'])->name('institution.invitations.store');
+        Route::delete('invitations/{id}', [\App\Http\Controllers\Dashboard\InstitutionInvitationController::class, 'destroy'])->name('institution.invitations.destroy');
+    });
 
-        Route::resource('project', \App\Http\Controllers\Dashboard\ProjectController::class)->names('project');
-        Route::resource('problem_area', \App\Http\Controllers\Dashboard\ProblemAreaController::class)->names('problem_area');
-        Route::resource('socioeconomic_data_type', \App\Http\Controllers\Dashboard\SocioeconomicDataTypeController::class)->names('socioeconomic_data_type');
+    Route::resource('location', LocationController::class)->names('location');
+    Route::resource('family', FamilyController::class)->names('family');
+
+    Route::resource('project', \App\Http\Controllers\Dashboard\ProjectController::class)->names('project');
+    Route::resource('problem_area', \App\Http\Controllers\Dashboard\ProblemAreaController::class)->names('problem_area');
+    Route::resource('socioeconomic_data_type', \App\Http\Controllers\Dashboard\SocioeconomicDataTypeController::class)->names('socioeconomic_data_type');
     // });
 });
 

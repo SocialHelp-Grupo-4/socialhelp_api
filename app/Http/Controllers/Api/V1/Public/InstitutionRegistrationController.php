@@ -6,6 +6,7 @@ use App\Enums\Enums\InstitutionStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Institution;
 use App\Services\InstitutionContext;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 
 class InstitutionRegistrationController extends Controller

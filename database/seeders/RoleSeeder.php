@@ -13,10 +13,20 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::create(['name' => 'Administrador']);
-        Role::create(['name' => 'Gestor']);
-        Role::create(['name' => 'Técnico Social']);
-        Role::create(['name' => 'Analista']);
-        Role::create(['name' => 'Beneficiário']);
+        $roles = [
+            'Administrador',
+            'Gestor',
+            'Técnico Social',
+            'Analista',
+            'Beneficiário',
+        ];
+
+        $guards = ['web', 'api'];
+
+        foreach ($guards as $guard) {
+            foreach ($roles as $role) {
+            Role::firstOrCreate(['name' => $role, 'guard_name' => $guard]);
+            }
+        }
     }
 }

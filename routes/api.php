@@ -32,6 +32,8 @@ Route::prefix('v1')->group(function () {
             Route::get('my-institutions-status', [\App\Http\Controllers\Api\V1\Public\InstitutionRegistrationController::class, 'status']);
         });
 
+    
+
         // Institution Context
         Route::get('/institutions', [\App\Http\Controllers\Api\V1\InstitutionContextController::class, 'index']);
         Route::post('/institutions/switch', [\App\Http\Controllers\Api\V1\InstitutionContextController::class, 'store']);

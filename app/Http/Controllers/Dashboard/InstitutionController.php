@@ -66,4 +66,14 @@ class InstitutionController extends Controller
 
         return redirect()->back()->with('success', 'Removido');
     }
+
+    public function show(Institution $institution)
+    {
+        return Inertia::render(
+            'institution/Show',
+            [
+                'institution' => $institution,
+            ]
+        );
+    }
 }
