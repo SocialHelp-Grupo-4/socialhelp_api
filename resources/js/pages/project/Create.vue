@@ -13,7 +13,7 @@ import { type BreadcrumbItem } from '@/types'
 const props = defineProps<{
     institutions: { id: number, name: string }[];
     problemAreas: { id: number, name: string }[];
-    statuses: string[];
+   
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -36,7 +36,6 @@ const form = useForm({
     objectives: '',
     start_date: '',
     end_date: '',
-    status: '',
     institution_id: '',
     problem_areas: [] as number[],
 })
@@ -108,20 +107,7 @@ function submit() {
                                 <p v-if="form.errors.end_date" class="text-sm text-red-500">{{ form.errors.end_date }}
                                 </p>
                             </div>
-                            <div class="space-y-2">
-                                <Label>Estado</Label>
-                                <Select v-model="form.status">
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Selecione o estado" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem v-for="status in statuses" :key="status" :value="status">
-                                            {{ status }}
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                <p v-if="form.errors.status" class="text-sm text-red-500">{{ form.errors.status }}</p>
-                            </div>
+                            
                         </div>
 
                         <div class="space-y-2">

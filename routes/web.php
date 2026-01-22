@@ -10,9 +10,7 @@ use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
+    return redirect('/docs');
 })->name('home');
 
 Route::get('dashboard', function () {
@@ -38,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::middleware(['institution.check'])->group(function () {
     Route::resource('users', UserController::class)->names('users');
     Route::prefix('institution')->group(function () {
+        Route::resource('category', InstitutionCategoryController::class)->names('category');
         // Explicit institution routes to avoid using an empty resource name which breaks parameter/method routes
         Route::get('/', [InstitutionController::class, 'index'])->name('institution.index');
         Route::get('create', [InstitutionController::class, 'create'])->name('institution.create');
@@ -47,7 +46,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('{institution}', [InstitutionController::class, 'update'])->name('institution.update');
         Route::delete('{institution}', [InstitutionController::class, 'destroy'])->name('institution.destroy');
 
-        Route::resource('category', InstitutionCategoryController::class)->names('category');
 
         // Members & Invitations
         Route::get('members', [\App\Http\Controllers\Dashboard\InstitutionMembersController::class, 'index'])->name('institution.members.index');

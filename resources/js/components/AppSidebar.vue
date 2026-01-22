@@ -25,7 +25,8 @@ import {
     Heart,
     Briefcase,
     AlertCircle,
-    Database
+    Database,
+    CheckCircle
 } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
@@ -44,6 +45,11 @@ const mainNavItems: NavItem[] = [
         title: 'Categorias de Instituição',
         href: '/institution/category',
         icon: Folder,
+    },
+    {
+        title: 'Aprovações',
+        href: '/admin/approvals',
+        icon: CheckCircle,
     },
     {
         title: 'Instituições',

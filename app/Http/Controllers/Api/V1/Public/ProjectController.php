@@ -18,7 +18,7 @@ class ProjectController extends Controller
         }
 
         // Add scopeActive() to Project model later if needed
-        $projects = $query->paginate(20);
+        $projects = $query->with(['institution', 'areaProblema'])->paginate(20);
 
         return response()->json($projects);
     }

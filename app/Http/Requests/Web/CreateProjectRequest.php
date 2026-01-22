@@ -26,7 +26,6 @@ class CreateProjectRequest extends FormRequest
             'objectives' => ['required', 'string'],
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date', 'after:start_date'],
-            'status' => ['required', 'string'],
             'institution_id' => ['required', 'exists:institutions,id'],
             'problem_areas' => ['nullable', 'array'],
             'problem_areas.*' => ['exists:problem_areas,id'],

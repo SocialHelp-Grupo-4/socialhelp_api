@@ -9,6 +9,7 @@ use App\Mail\InstitutionApproved;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
+use Log;
 
 class InstitutionApprovalController extends Controller
 {
@@ -24,7 +25,7 @@ class InstitutionApprovalController extends Controller
         $pendingInstitutions = Institution::where('status', InstitutionStatus::PENDING)
             ->with(['category', 'users']) // eager load owner?
             ->orderByDesc('created_at')
-            ->paginate(20);
+            ->get();
 
         return Inertia::render('Admin/InstitutionApprovals/Index', [
             'institutions' => $pendingInstitutions
@@ -36,23 +37,28 @@ class InstitutionApprovalController extends Controller
      */
     public function approve(Institution $institution)
     {
-        if ($institution->status === InstitutionStatus::APPROVED) {
-            return back()->with('info', 'Instituição já aprovada.');
+        try {
+            if ($institution->status === InstitutionStatus::APPROVED) {
+                return back()->with('info', 'Instituição já aprovada.');
+            }
+
+            $institution->update(['status' => InstitutionStatus::APPROVED]);
+
+            // Notify Owner
+            // Assuming the creator (user_id) or the first admin user is the owner to notify
+            // $owner = $institution->users()->wherePivot('role', 'admin')->first(); 
+            // Or simply the creator:
+            $owner = \App\Models\User::find($institution->user_id);
+
+            if ($owner) {
+                Mail::to($owner->email)->send(new InstitutionApproved($institution, $owner));
+            }
+
+            return back()->with('success', 'Instituição aprovada e notificação enviada.');
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return back()->with('error', 'Erro ao aprovar instituição: ' . $th->getMessage());
         }
-
-        $institution->update(['status' => InstitutionStatus::APPROVED]);
-
-        // Notify Owner
-        // Assuming the creator (user_id) or the first admin user is the owner to notify
-        // $owner = $institution->users()->wherePivot('role', 'admin')->first(); 
-        // Or simply the creator:
-        $owner = \App\Models\User::find($institution->user_id);
-
-        if ($owner) {
-            Mail::to($owner->email)->send(new InstitutionApproved($institution, $owner));
-        }
-
-        return back()->with('success', 'Instituição aprovada e notificação enviada.');
     }
 
     /**

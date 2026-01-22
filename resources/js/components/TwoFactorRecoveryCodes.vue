@@ -42,11 +42,12 @@ onMounted(async () => {
     <Card class="w-full">
         <CardHeader>
             <CardTitle class="flex gap-3">
-                <LockKeyhole class="size-4" />2FA Recovery Codes
+                <LockKeyhole class="size-4" />Códigos de recuperação
             </CardTitle>
             <CardDescription>
-                Recovery codes let you regain access if you lose your 2FA
-                device. Store them in a secure password manager.
+                Códigos de recuperação permitem que você recupere o acesso
+                se perder seu dispositivo de 2FA. Armazene-os em um gerenciador
+                de senhas seguro.
             </CardDescription>
         </CardHeader>
         <CardContent>
