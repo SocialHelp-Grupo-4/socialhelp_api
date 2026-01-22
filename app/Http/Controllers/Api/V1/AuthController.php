@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\v1\User\CreateUserRequest;
+use App\Http\Requests\Api\v1\CreateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Http\Requests\LoginRequest;
+use Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
@@ -16,13 +17,18 @@ class AuthController extends Controller
     public function register(CreateUserRequest $request, \App\Services\InvitationService $invitationService)
     {
         $data = $request->validated();
-        $data['password'] = Hash::make($data['password']);
+        try {
+            $data['password'] = Hash::make($data['password']);
 
-        $user = User::query()->create($data);
+            $user = User::query()->create($data);
 
-        $invitationService->processPendingFor($user);
+            $invitationService->processPendingFor($user);
 
-        return response()->json(['message' => 'User register successfully'], 201);
+            return response()->json(['message' => 'User register successfully'], 201);
+        } catch (\Throwable $th) {
+            Log::error('Error registering user: ' . $th->getMessage());
+            return response()->json(['error' => 'Failed to register user'], 500);
+        }
     }
 
     public function login(LoginRequest $request)
