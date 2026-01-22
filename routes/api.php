@@ -12,6 +12,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('public')->group(function () {
         Route::get('projects', [\App\Http\Controllers\Api\V1\Public\ProjectController::class, 'index']);
         Route::get('projects/{id}', [\App\Http\Controllers\Api\V1\Public\ProjectController::class, 'show']);
+        Route::get('institution-categories', [\App\Http\Controllers\Api\V1\InstitutionCategoryController::class, 'index']);
     });
 
     Route::middleware('auth:api')->group(function () {
@@ -36,8 +37,9 @@ Route::prefix('v1')->group(function () {
         Route::post('/institutions/switch', [\App\Http\Controllers\Api\V1\InstitutionContextController::class, 'store']);
         Route::get('/institutions/current', [\App\Http\Controllers\Api\V1\InstitutionContextController::class, 'current']);
 
-        Route::prefix('projeto-social')->group(function () {
 
+        Route::prefix('projeto-social')->group(function () {
+            Route::apiResource('families', \App\Http\Controllers\Api\V1\FamilyController::class);
         });
     });
 });

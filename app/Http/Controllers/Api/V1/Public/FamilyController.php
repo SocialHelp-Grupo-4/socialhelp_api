@@ -23,17 +23,30 @@ class FamilyController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'address' => 'required|string',
-            // Add validation rules
+            'address' => 'required|array',
+            'address.country' => 'required',
+            'address.province' => 'required',
+            'address.municipality' => 'required',
+            'address.morada' => 'required',
+            'location_id' => 'required|exists:locations,id',
+            // Add other validation rules as needed
         ]);
 
         $user = $request->user();
 
-        $family = $user->family()->create([
-            'user_id' => $user->id,
-            'address' => $request->address,
-            // ...
-        ]);
+        // Transaction to ensure atomicity
+        $family = \Illuminate\Support\Facades\DB::transaction(function () use ($request, $user) {
+            // Create Address
+            $address = \App\Models\Address::create($request->address);
+            $user->addresses()->syncWithoutDetaching([$address->id]);
+
+            // Create Family
+            return $user->family()->create([
+                'user_id' => $user->id,
+                'location_id' => $request->location_id,
+                'status' => \App\Enums\Enums\FamilyStatus::PENDING, // Default status
+            ]);
+        });
 
         return response()->json($family, 201);
     }
