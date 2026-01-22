@@ -38,7 +38,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::middleware(['institution.check'])->group(function () {
     Route::resource('users', UserController::class)->names('users');
     Route::prefix('institution')->group(function () {
-        Route::resource('', InstitutionController::class)->names('institution');
+        // Explicit institution routes to avoid using an empty resource name which breaks parameter/method routes
+        Route::get('/', [InstitutionController::class, 'index'])->name('institution.index');
+        Route::get('create', [InstitutionController::class, 'create'])->name('institution.create');
+        Route::post('/', [InstitutionController::class, 'store'])->name('institution.store');
+        Route::get('{institution}', [InstitutionController::class, 'show'])->name('institution.show');
+        Route::get('{institution}/edit', [InstitutionController::class, 'edit'])->name('institution.edit');
+        Route::put('{institution}', [InstitutionController::class, 'update'])->name('institution.update');
+        Route::delete('{institution}', [InstitutionController::class, 'destroy'])->name('institution.destroy');
 
         Route::resource('category', InstitutionCategoryController::class)->names('category');
 

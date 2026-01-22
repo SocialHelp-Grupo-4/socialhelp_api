@@ -355,7 +355,7 @@
                 }
             }
         },
-        "/api/v1/institution-categories": {
+        "/api/v1/public/institution-categories": {
             "get": {
                 "summary": "Get list of institution categories",
                 "tags": ["Institution Categories"],

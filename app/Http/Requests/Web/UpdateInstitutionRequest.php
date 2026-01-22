@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Web;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateInstitutionRequest extends FormRequest
 {
@@ -21,11 +22,27 @@ class UpdateInstitutionRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'name' => 'required|string|max:100|unique:institutions,name,' . $this->route('institution')->id,
-            'nif' => 'required|string|max:14|unique:institutions,nif,' . $this->route('institution')->id,
-            'email' => 'required|email|max:100|unique:institutions,email,' . $this->route('institution')->id,
+        $institution = $this->route('institution');
 
+        return [
+            'name' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('institutions', 'name')->ignore($institution),
+            ],
+            'nif' => [
+                'required',
+                'string',
+                'max:14',
+                Rule::unique('institutions', 'nif')->ignore($institution),
+            ],
+            'email' => [
+                'required',
+                'email',
+                'max:100',
+                Rule::unique('institutions', 'email')->ignore($institution),
+            ],
         ];
     }
 }

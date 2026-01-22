@@ -53,7 +53,7 @@ class InstitutionController extends Controller
         );
     }
 
-     public function update(UpdateInstitutionRequest $request, Institution $institution)
+    public function update(UpdateInstitutionRequest $request, Institution $institution)
     {
         $institution->update($request->validated());
 

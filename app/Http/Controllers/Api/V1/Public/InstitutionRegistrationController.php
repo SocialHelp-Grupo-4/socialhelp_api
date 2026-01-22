@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api\V1\Public;
 use App\Enums\Enums\InstitutionStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Institution;
-use App\Services\InstitutionContext;
-use Spatie\Permission\Models\Role;
+use DB;
+use Log;
 use Illuminate\Http\Request;
 
 class InstitutionRegistrationController extends Controller
@@ -16,37 +16,55 @@ class InstitutionRegistrationController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'nif' => 'required|string|unique:institutions,nif',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:institutions,email',
             'institution_category_id' => 'required|exists:institution_categories,id',
             'description' => 'nullable|string'
+        ], [
+            'institution_category_id.exists' => 'A categoria selecionada é inválida.',
+            'nif.unique' => 'Já existe uma instituição registada com este NIF.',
+            'name.required' => 'O campo nome é obrigatório.',
+            'nif.required' => 'O campo NIF é obrigatório.',
+            'email.required' => 'O campo email é obrigatório.',
+            'email.email' => 'O campo email deve ser um endereço de email válido.',
+            'email.unique' => 'Já existe uma instituição registada com este email.'
         ]);
+        try {
 
-        $user = $request->user();
+            DB::beginTransaction();
 
-        $institution = Institution::create([
-            'name' => $request->name,
-            'nif' => $request->nif,
-            'email' => $request->email,
-            'institution_category_id' => $request->institution_category_id,
-            'description' => $request->description,
-            'user_id' => $user->id, // Created by
-            'status' => InstitutionStatus::PENDING
-        ]);
+            $user = $request->user();
 
-        // Attach owner
-        $institution->users()->attach($user->id, [
-            'role' => 'admin', // Owner/Admin
-            'is_active' => true // Pending approval global institution, but active locally? Or check status?
-        ]);
+            $institution = Institution::create([
+                'name' => $request->name,
+                'nif' => $request->nif,
+                'email' => $request->email,
+                'institution_category_id' => $request->institution_category_id,
+                'description' => $request->description,
+                'user_id' => $user->id, // Created by
+                'status' => InstitutionStatus::PENDING
+            ]);
 
-        // Assign Spatie Role
-        setPermissionsTeamId($institution->id);
-        $user->assignRole('admin');
+            // Attach owner
+            $institution->users()->attach($user->id, [
+                'role' => 'Gestor', // Owner/Admin
+                'is_active' => true // Pending approval global institution, but active locally? Or check status?
+            ]);
 
-        return response()->json([
-            'message' => 'Instituição registada com sucesso! Aguarde a aprovação do administrador.',
-            'data' => $institution
-        ], 201);
+            // Assign Spatie Role
+            setPermissionsTeamId($institution->id);
+            $user->assignRole('Gestor');
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Instituição registada com sucesso! Aguarde a aprovação do administrador.',
+                'data' => $institution
+            ], 201);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::error('Institution Registration Failed: ' . $th->getMessage());
+            return response()->json(['error' => 'Registo da instituição falhou', 'details' => $th->getMessage()], 500);
+        }
     }
 
     public function status(Request $request)
